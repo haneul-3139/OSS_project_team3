@@ -7,7 +7,7 @@ import sqlite3
 bg_color = "DeepSkyBlue2"
 fg_color = "#383a39"
 
-#헤드이미지 초기화
+#헤드이미지 초기화 
 
 #클래스
 class typingApp:
