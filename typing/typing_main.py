@@ -3,6 +3,8 @@ from PIL import ImageTk, Image
 from tkinter.messagebox import showinfo,showerror
 import sqlite3
 
+import TypingGame
+
 
 bg_color = "DeepSkyBlue2"
 fg_color = "#383a39"
@@ -58,6 +60,8 @@ class typingApp:
         c.execute("SELECT * FROM login WHERE user_id = ? AND user_password = ?", (userid,password))
         if c.fetchall():
             showinfo(title = "Login", message = "로그인 성공!!")
+            TypingGame.typingGame.user_info(userid)
+            TypingGame.typGameGui()
         else:
             showerror(title = "Login", message = "로그인 실패!! ID or Password 확인!")
         c.close()
@@ -102,3 +106,4 @@ class typingApp:
 
 if __name__ == "__main__":
     typingApp()
+    
