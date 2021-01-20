@@ -97,6 +97,7 @@ class typingApp:
         for uid in c.execute("SELECT * FROM login WHERE user_id=%s" % userid2):
             if uid == uid:
                 showinfo(title="회원가입 성공", message="회원가입 성공!!!")
+                sign.destroy()
         c.close()
 
 if __name__ == "__main__":
