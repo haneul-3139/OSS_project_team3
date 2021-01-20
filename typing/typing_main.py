@@ -106,4 +106,4 @@ class typingApp:
 
 if __name__ == "__main__":
     typingApp()
-    
+    #asd
