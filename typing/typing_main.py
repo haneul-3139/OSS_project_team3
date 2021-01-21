@@ -61,7 +61,7 @@ class typingApp:
         if c.fetchall():
             showinfo(title = "Login", message = "로그인 성공!!")
             TypingGame.typingGame.user_info(userid)
-            TypingGame.typGameGui()
+            # TypingGame.typGameGui()
         else:
             showerror(title = "Login", message = "로그인 실패!! ID or Password 확인!")
         c.close()
