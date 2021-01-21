@@ -108,14 +108,15 @@ class typingApp:
         userid2 = lbluserid2.get()
         password2 = lblpassword2.get()
         # sql = "INSERT INTO login (user_id,user_password)VALUES({0},{1})",format(userid2,password2)
-        sql = 'INSERT INTO login (user_id, user_password) VALUES(?,?)'
+        sql2 = 'INSERT INTO login (user_id, user_password) VALUES(?,?)'
         # txt = c.execute("SELECT * FROM login WHERE user_id like '{}%'" % userid2)
         # print(txt)
         # if userid2 == c.execute("SELECT * FROM login WHERE user_id=%s" % userid2):
         #     print("중복")
-        c.execute(sql,(userid2,password2))
+        # print(userid2,password2)
         # c.commit()
-        for uid in c.execute("SELECT * FROM login WHERE user_id=%s" % userid2):
+        c.execute(sql2,(userid2,password2))
+        for uid in c.execute("SELECT * FROM login WHERE user_id=?",(userid2,)):
             if uid == uid:
                 showinfo(title="회원가입 성공", message="회원가입 성공!!!")
                 sign.destroy()

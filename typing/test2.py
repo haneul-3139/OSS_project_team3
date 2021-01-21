@@ -25,6 +25,25 @@ else:
         words.append(c.strip())
     word_f.close()
 
+#맞힌개수 출력
+def count_print(score):
+    return score
+def time_see():
+    global tm
+    tm = tm+1
+    t.config(text='소요시간 : '+str(tm),  font =("휴먼매직체", 20) ,fg='red')
+    t.place(x=2,y=350)
+    root.after(1000,time_see)
+def result(end):
+    global start_tt
+    res = Tk()
+    res.config(bg='black')
+    res.title("결과화면")
+    res.geometry("600x400")
+    re = Label(res, text='맞힌개수 : '+str(count_print(score)),fg='blue',font=('휴먼매직체',40),bg = 'black')
+    re.place(x=150,y=200)
+    see = Label(res, text='걸린시간 : '+format(end-start_tt,'.3f'),fg='red',font=('휴먼매직체',40),bg='black')
+    see.place(x=100,y=100)
 #클래스
 class game():
     global root
@@ -52,41 +71,45 @@ class game():
         #바뀌는 시간 출력해줄 라벨
         t = Label(root)
         print("루프전줄까지실행")
+        
+        def start():
+            global end_tt
+            try:
+                    #게임횟수 10번
+                if a < 10 :
+                    if tm==-1:
+                        #이부분이 login페이지가 종료되고 됨..............
+                        print("dfdf")
+                        time_see()
+                        random.shuffle(words)
+                        random_word = random.choice(words)
+                        q.config(text=str(random_word))
+                        typing.place(x=70,y=200)
+                        count.place(x=400, y=350)
+                    def n(event):
+                        global a,score
+                        if e.get()==random_word.lower():
+                            typing.delete(0,END)
+                            score = score + 1
+                            count.config(text='맞힌개수 : '+str(score))
+                            count_print(score)
+                            print(score)
+                            game.start()
+                            a=a+1
+                        else:
+                            typing.delete(0,END)
+                            game.start()
+                            a=a+1
+                    root.bind("<Return>",n)
+                else:
+                    global ent_tt
+                    end_tt = time.time()
+                    root.quit()
+                    result(end_tt)
+            except:
+                pass
+        start()
         root.mainloop()
-    # def start():
-        global end_tt
-        try:
-                #게임횟수 10번
-            if a < 10 :
-                if tm==-1:
-                    time_see()
-                    random.shuffle(words)
-                    random_word = random.choice(words)
-                    q.config(text=str(random_word))
-                    typing.place(x=70,y=200)
-                    count.place(x=400, y=350)
-                def n(event):
-                    global a,score
-                    if e.get()==random_word.lower():
-                        typing.delete(0,END)
-                        score = score + 1
-                        count.config(text='맞힌개수 : '+str(score))
-                        count_print(score)
-                        print(score)
-                        game.start()
-                        a=a+1
-                    else:
-                        typing.delete(0,END)
-                        game.start()
-                        a=a+1
-                root.bind("<Return>",n)
-            else:
-                global ent_tt
-                end_tt = time.time()
-                root.quit()
-                result(end_tt)
-        except:
-            pass
 class typingApp:
     def __init__(self):
         #id쪽 ui
@@ -172,26 +195,8 @@ class typingApp:
             else:
                 showerror(title="아이디중복오류",message="다른 아이디를 입력해주세요.")
         c.close()
-#맞힌개수 출력
-def count_print(score):
-    return score
-def time_see():
-    global tm
-    tm = tm+1
-    t.config(text='소요시간 : '+str(tm),  font =("휴먼매직체", 20) ,fg='red')
-    t.place(x=2,y=350)
-    root.after(1000,time_see)
-def result(end):
-    global start_tt
-    res = Tk()
-    res.config(bg='black')
-    res.title("결과화면")
-    res.geometry("600x400")
-    re = Label(res, text='맞힌개수 : '+str(count_print(score)),fg='blue',font=('휴먼매직체',40),bg = 'black')
-    re.place(x=150,y=200)
-    see = Label(res, text='걸린시간 : '+format(end-start_tt,'.3f'),fg='red',font=('휴먼매직체',40),bg='black')
-    see.place(x=100,y=100)
 def main():
     typingApp()
+    game()
 if __name__ == "__main__":
     main()
