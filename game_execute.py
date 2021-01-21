@@ -91,10 +91,48 @@ def result(end):
     res.title("결과화면")
     res.geometry("600x400")
     re = Label(res, text='맞힌개수 : '+str(count_print(score)),fg='blue',font=('휴먼매직체',40),bg = 'black')
-    re.place(x=150,y=200)
+    re.place(x=150,y=300)
     see = Label(res, text='걸린시간 : '+format(end-start_tt,'.3f'),fg='red',font=('휴먼매직체',40),bg='black')
-    see.place(x=100,y=100)
+    see.place(x=100,y=250)
     
+    lbl = tkinter.Label(res, text = "Ranking")
+    lbl.pack()
+
+    treeview = tkinter.ttk.Treeview(res, columns=['one', 'two', 'three', 'four', 'five'], displaycolumn = ["one", 'two', 'three', 'four', 'five'])
+    treeview.pack()
+
+    treeview.column("#0", width = 50,)
+    treeview.heading("#0", text = "Rank")
+
+    treeview.column("#1", width = 50, anchor = "center")
+    treeview.heading("#1", text = "id")
+
+    treeview.column("#2", width = 70, anchor = "center")
+    treeview.heading("#2", text = "name", anchor = "center")
+
+    treeview.column("#3", width = 100, anchor = "center")
+    treeview.heading("#3", text = "맞춘 개수", anchor = "center")
+
+    treeview.column("#4", width = 100, anchor = "center")
+    treeview.heading("#4", text = "클리어 시간", anchor = "center")
+
+    treeview.column("#5", width = 150, anchor = "center")
+    treeview.heading("#5", text = "날짜", anchor = "center")
+
+    db = sqlite3.connect('./resource/records.db', isolation_level=None)
+    cursor = db.cursor()
+
+    cursor.execute('select * from records')
+    records = cursor.fetchall()
+
+    db.close()
+
+    records.sort(key = lambda x:(-x[2], float(x[3])))
+
+    for i in range(len(records)):
+        treeview.insert('', 'end', text = i + 1, values = records[i], iid=str(i) + "번")
+    
+    res.mainloop()
 
 
 start_tt = time.time()
