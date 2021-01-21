@@ -1,12 +1,6 @@
 from tkinter import*
 import random
 import time
-import sys
-#사운드 출력 필요 모듈
-import winsound
-import sqlite3
-import datetime
-
 
 #단어
 words=[]
@@ -98,7 +92,6 @@ class game():
                     global a
                     global score
                     if e.get()==random_word.lower():
-                        winsound.PlaySound('./resource/audio/good.wav',winsound.SND_FILENAME)
                         typing.delete(0,END)
                         score = score + 1
                         count.config(text='맞힌개수 : '+str(score))
@@ -107,7 +100,6 @@ class game():
                         a=a+1
 
                     else:
-                        winsound.PlaySound('./resource/audio/bad.wav',winsound.SND_FILENAME)
                         typing.delete(0,END)
                         game.start()
                         a=a+1
