@@ -3,9 +3,7 @@ import random
 import time
 import sys
 #사운드 출력 필요 모듈
-import winsound
 import sqlite3
-import datetime
 
 
 #단어
@@ -33,8 +31,6 @@ a=1
 #맞힌개수 초기화
 score = 0
 
-#시간설정 초기화
-tm = -1
 
 e = StringVar()
 
@@ -50,31 +46,7 @@ count = Label(root, text="맞힌개수 : 0", font =("휴먼매직체", 20), fg =
 
 #바뀌는 시간 출력해줄 라벨
 t = Label(root)
-    
-#맞힌개수 출력
-def count_print(score):
-    return score
 
-#결과 출력
-def result(end):
-    global start_tt
-    res = Tk()
-    res.config(bg='black')
-    res.title("결과화면")
-    res.geometry("600x400")
-    re = Label(res, text='맞힌개수 : '+str(count_print(score)),fg='blue',font=('휴먼매직체',40),bg = 'black')
-    re.place(x=150,y=200)
-    see = Label(res, text='걸린시간 : '+format(end-start_tt,'.3f'),fg='red',font=('휴먼매직체',40),bg='black')
-    see.place(x=100,y=100)
-
-start_tt = time.time()
-# 타임 보이기
-def time_see():
-    global tm
-    tm = tm+1
-    t.config(text='소요시간 : '+str(tm),  font =("휴먼매직체", 20) ,fg='red')
-    t.place(x=2,y=350)
-    root.after(1000,time_see)
 
 #게임실행
 class game():
@@ -82,10 +54,9 @@ class game():
         global end_tt
         
         try:
-            #게임횟수 10번
-            if a < 10 :
-                if tm==-1:
-                    time_see()
+            #게임횟수 바꿔주려면 2값을 바꿔주면 됨
+            if a < 5 :
+                
                 random.shuffle(words)
                 random_word = random.choice(words)
 
@@ -98,25 +69,22 @@ class game():
                     global a
                     global score
                     if e.get()==random_word.lower():
-                        winsound.PlaySound('./resource/audio/good.wav',winsound.SND_FILENAME)
+                        # winsound.PlaySound('./sound/good.wav',winsound.SND_FILENAME)
                         typing.delete(0,END)
                         score = score + 1
                         count.config(text='맞힌개수 : '+str(score))
-                        count_print(score)
                         game.start()
                         a=a+1
 
                     else:
-                        winsound.PlaySound('./resource/audio/bad.wav',winsound.SND_FILENAME)
+                        # winsound.PlaySound('./sound/bad.wav',winsound.SND_FILENAME)
                         typing.delete(0,END)
                         game.start()
                         a=a+1
             
                 root.bind("<Return>",n)
             else:
-                end_tt = time.time()
                 root.destroy()
-                result(end_tt)
         except:
             pass
     start()
