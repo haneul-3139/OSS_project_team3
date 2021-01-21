@@ -11,17 +11,17 @@ import TypingGame
 #로그인화면 배경변수
 bg_color = "DeepSkyBlue2"
 fg_color = "#383a39"
-## 단어 초기설정
-# words=[]
+# 단어 초기설정
+words=[]
 
-# try:
-#     word_f=open('./resource/word1.txt','r')
-# except IOError:
-#     print("파일이 없으므로 게임진행 안됨")
-# else:
-#     for c in word_f:
-#         words.append(c.strip())
-#     word_f.close()
+try:
+    word_f=open('./resource/word1.txt','r')
+except IOError:
+    print("파일이 없으므로 게임진행 안됨")
+else:
+    for c in word_f:
+        words.append(c.strip())
+    word_f.close()
 
 #클래스
 class typingApp:

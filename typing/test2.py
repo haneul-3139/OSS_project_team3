@@ -1,9 +1,11 @@
 import tkinter
+from tkinter import*
 from PIL import ImageTk, Image
 from tkinter.messagebox import showinfo,showerror
 import sqlite3
 import random
 import time
+
 # import game_execute
 # import t
 import TypingGame
@@ -24,62 +26,64 @@ else:
     word_f.close()
 
 #클래스
-class game:
+class game():
+    global root
     def __init__(self):
-        extra_window = tkinter.Toplevel(master)
-        extra_window.geometry("600x400")
-        # exlabel = tkinter.Label(extra_window, text="{} 님이 Login 중입니다.".format(userid)).grid(row=1,column=0, padx=(50, 0), pady=(20, 10))
+        global a, score, tm, e, t
+        root = Tk()
+        root.geometry("600x400")
+        root.title("타이핑게임 실행화면")
+        # exlabel = Label(root, text="{} 님이 Login 중입니다.".format(userid)).grid(row=1,column=0, padx=(50, 0), pady=(20, 10))
         #게임 플레이 횟수
         a=1
         #맞힌개수 초기화
         score = 0
         #시간설정 초기화
         tm = -1
-        e = tkinter.StringVar()
+        e = StringVar()
         #입력창
-        typing = tkinter.Entry(extra_window,textvariable=e, font=("휴먼매직체", 30), bg='black', fg='white')
+        typing = Entry(root,textvariable=e, font=("휴먼매직체", 30), bg='black', fg='white')
         #랜덤 단어 보여주기
-        q = tkinter.Label(extra_window,font=("휴먼매직체", 50), bg='white')
+        q = Label(root,font=("휴먼매직체", 50), bg='white')
         q.pack(side='top')
         #맞힌개수
-        count = tkinter.Label(extra_window, text="맞힌개수 : 0", font =("휴먼매직체", 20), fg ='blue' )
+        count = Label(root, text="맞힌개수 : 0", font =("휴먼매직체", 20), fg ='blue' )
+        # count.pack()
         #바뀌는 시간 출력해줄 라벨
-        t = tkinter.Label(extra_window)
-    def start():
+        t = Label(root)
+        print("루프전줄까지실행")
+        root.mainloop()
+    # def start():
         global end_tt
         try:
-            #게임횟수 10번
+                #게임횟수 10번
             if a < 10 :
                 if tm==-1:
                     time_see()
-                random.shuffle(words)
-                random_word = random.choice(words)
-
-                q.config(text=str(random_word))
-                typing.place(x=70,y=200)
-                count.place(x=400, y=350)
-            
-            
+                    random.shuffle(words)
+                    random_word = random.choice(words)
+                    q.config(text=str(random_word))
+                    typing.place(x=70,y=200)
+                    count.place(x=400, y=350)
                 def n(event):
-                    global a
-                    global score
+                    global a,score
                     if e.get()==random_word.lower():
                         typing.delete(0,END)
                         score = score + 1
                         count.config(text='맞힌개수 : '+str(score))
                         count_print(score)
+                        print(score)
                         game.start()
                         a=a+1
-
                     else:
                         typing.delete(0,END)
                         game.start()
                         a=a+1
-            
                 root.bind("<Return>",n)
             else:
+                global ent_tt
                 end_tt = time.time()
-                root.destroy()
+                root.quit()
                 result(end_tt)
         except:
             pass
@@ -93,6 +97,7 @@ class typingApp:
         master.title("환영합니다. 타이핑게임")
         photo = ImageTk.PhotoImage(Image.open("./resource/typing.jpg"))
         tkinter.Label(master, image=photo).grid(rowspan = 3, columnspan = 5, row =0,column = 0)
+        tkinter.Label(master).grid(rowspan = 3, columnspan = 5, row =0,column = 0)
         tkinter.Label(master,  text="Userid:", fg=fg_color, bg=bg_color, font=("Helvetica", 15)).grid(row=8, padx=(50, 0), pady=(20, 10))
 
         lbluserid = tkinter.Entry(master)
@@ -108,19 +113,6 @@ class typingApp:
         #회원가입 버튼
         tkinter.Button(master, text="sign",borderwidth=3, relief='ridge', fg=fg_color, bg=bg_color, width = 15, command = self.sign).grid(row = 10, column=1,pady=(20, 10))
         master.mainloop()
-    
-    #추가적으로 밑에다가 구현해야함! 로그인하면 로그인창 꺼지고
-    #새로운 gui가 오픈되어야함, 즉 새로운 프레임 오픈
-    #그 안에다가 user_id 를 얻어와서 누구누구님 환영합니다. 써지게하고 밑에는 타이핑게임 구현 하려함.
-    #간단하게 타이핑 게임 text에다가 word.txt를 불러와서 랜덤에하게 나온 글자를 
-    #Text()에다가 뿌려줌 정확하게 타이핑하고 교수님이 미리 구현해놓은 비교구문으로 
-    #text() 와 text를 비교하여 get으로 얻어와 정답 / 오답 구분
-    #마지막엔 label에다가 텍스트를 작성. ex) 걸린시간 : 131313 , 정답수 : 10
-    #그럼 db에는 시간, 정답수 등 저장될꺼임
-    #그럼 그 데이터와 회원가입한 userid를 가지고 순위를 매김
-    # 즉 그럼 타이핑게임이 종료되는시점에서 타이핑게임 GUI는 종료 새로운 순위 GUI가 오픈되도록
-    #설정할 예정 첫 계획안이라 전부 안될수도있음. 일단 참고 부탁드릴게요.
-
     #login 이벤트
     def login(self):
         global userid, password
@@ -133,7 +125,6 @@ class typingApp:
             showinfo(title = "Login", message = "로그인 성공!!")
             TypingGame.typingGame.user_info(userid)
             game()
-            game.start()
         else:
             showerror(title = "Login", message = "로그인 실패!! ID or Password 확인!")
         c.close()
@@ -184,6 +175,22 @@ class typingApp:
 #맞힌개수 출력
 def count_print(score):
     return score
+def time_see():
+    global tm
+    tm = tm+1
+    t.config(text='소요시간 : '+str(tm),  font =("휴먼매직체", 20) ,fg='red')
+    t.place(x=2,y=350)
+    root.after(1000,time_see)
+def result(end):
+    global start_tt
+    res = Tk()
+    res.config(bg='black')
+    res.title("결과화면")
+    res.geometry("600x400")
+    re = Label(res, text='맞힌개수 : '+str(count_print(score)),fg='blue',font=('휴먼매직체',40),bg = 'black')
+    re.place(x=150,y=200)
+    see = Label(res, text='걸린시간 : '+format(end-start_tt,'.3f'),fg='red',font=('휴먼매직체',40),bg='black')
+    see.place(x=100,y=100)
 def main():
     typingApp()
 if __name__ == "__main__":

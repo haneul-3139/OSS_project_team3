@@ -1,6 +1,14 @@
 from tkinter import*
 import random
 import time
+import tkinter
+import sqlite3
+
+#db생성
+conn = sqlite3.connect('c:/gitOSSteam3/resource/records.db',isolation_level=None)
+
+#cursor 연결
+cursor=conn.cursor()
 
 #단어
 words=[]
@@ -31,7 +39,7 @@ score = 0
 tm = -1
 
 e = StringVar()
-
+testname = "test"
 #입력창
 typing = Entry(root,textvariable=e, font=("휴먼매직체", 30), bg='black', fg='white')
 
@@ -44,11 +52,10 @@ count = Label(root, text="맞힌개수 : 0", font =("휴먼매직체", 20), fg =
 
 #바뀌는 시간 출력해줄 라벨
 t = Label(root)
-    
+
 #맞힌개수 출력
 def count_print(score):
     return score
-
 #결과 출력
 def result(end):
     global start_tt
@@ -89,16 +96,15 @@ class game():
             
             
                 def n(event):
-                    global a
-                    global score
+                    global a,score
                     if e.get()==random_word.lower():
                         typing.delete(0,END)
                         score = score + 1
                         count.config(text='맞힌개수 : '+str(score))
                         count_print(score)
+                        print(score)
                         game.start()
                         a=a+1
-
                     else:
                         typing.delete(0,END)
                         game.start()
@@ -106,10 +112,13 @@ class game():
             
                 root.bind("<Return>",n)
             else:
+                global ent_tt
                 end_tt = time.time()
-                root.destroy()
+                root.quit()
                 result(end_tt)
         except:
             pass
+    # cursor.execute("INSERT INTO records('uid','score','record')VALUES(?,?,?)",(testname,score,"test"))
     start()
+    conn.close()
 root.mainloop()
