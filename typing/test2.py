@@ -11,19 +11,78 @@ import TypingGame
 #로그인화면 배경변수
 bg_color = "DeepSkyBlue2"
 fg_color = "#383a39"
-## 단어 초기설정
-# words=[]
+#단어 초기설정
+words=[]
 
-# try:
-#     word_f=open('./resource/word1.txt','r')
-# except IOError:
-#     print("파일이 없으므로 게임진행 안됨")
-# else:
-#     for c in word_f:
-#         words.append(c.strip())
-#     word_f.close()
+try:
+    word_f=open('./resource/word1.txt','r')
+except IOError:
+    print("파일이 없으므로 게임진행 안됨")
+else:
+    for c in word_f:
+        words.append(c.strip())
+    word_f.close()
 
 #클래스
+class game:
+    def __init__(self):
+        extra_window = tkinter.Toplevel(master)
+        extra_window.geometry("600x400")
+        # exlabel = tkinter.Label(extra_window, text="{} 님이 Login 중입니다.".format(userid)).grid(row=1,column=0, padx=(50, 0), pady=(20, 10))
+        #게임 플레이 횟수
+        a=1
+        #맞힌개수 초기화
+        score = 0
+        #시간설정 초기화
+        tm = -1
+        e = tkinter.StringVar()
+        #입력창
+        typing = tkinter.Entry(extra_window,textvariable=e, font=("휴먼매직체", 30), bg='black', fg='white')
+        #랜덤 단어 보여주기
+        q = tkinter.Label(extra_window,font=("휴먼매직체", 50), bg='white')
+        q.pack(side='top')
+        #맞힌개수
+        count = tkinter.Label(extra_window, text="맞힌개수 : 0", font =("휴먼매직체", 20), fg ='blue' )
+        #바뀌는 시간 출력해줄 라벨
+        t = tkinter.Label(extra_window)
+    def start():
+        global end_tt
+        try:
+            #게임횟수 10번
+            if a < 10 :
+                if tm==-1:
+                    time_see()
+                random.shuffle(words)
+                random_word = random.choice(words)
+
+                q.config(text=str(random_word))
+                typing.place(x=70,y=200)
+                count.place(x=400, y=350)
+            
+            
+                def n(event):
+                    global a
+                    global score
+                    if e.get()==random_word.lower():
+                        typing.delete(0,END)
+                        score = score + 1
+                        count.config(text='맞힌개수 : '+str(score))
+                        count_print(score)
+                        game.start()
+                        a=a+1
+
+                    else:
+                        typing.delete(0,END)
+                        game.start()
+                        a=a+1
+            
+                root.bind("<Return>",n)
+            else:
+                end_tt = time.time()
+                root.destroy()
+                result(end_tt)
+        except:
+            pass
 class typingApp:
     def __init__(self):
         #id쪽 ui
@@ -71,10 +130,10 @@ class typingApp:
         password = lblpassword.get()
         c.execute("SELECT * FROM login WHERE user_id = ? AND user_password = ?", (userid,password))
         if c.fetchall():
-            showinfo(title = "Login", message = "{}님이 로그인 하셨습니다.".format(userid))
+            showinfo(title = "Login", message = "로그인 성공!!")
             TypingGame.typingGame.user_info(userid)
-            # game()
-            # game.start()
+            game()
+            game.start()
         else:
             showerror(title = "Login", message = "로그인 실패!! ID or Password 확인!")
         c.close()

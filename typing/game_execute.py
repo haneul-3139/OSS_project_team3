@@ -112,6 +112,4 @@ class game():
         except:
             pass
     start()
-
-
 root.mainloop()

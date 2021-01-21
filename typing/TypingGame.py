@@ -14,6 +14,7 @@ class typingGame():
         print(strname)
 
 class typGameGui:
+    
     # global tpg
     # tpg = tkinter.Tk()
     # tpg.title("Typing Game!")
